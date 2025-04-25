@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valyuta Kalkulyatoru</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-color: #7b2cbf;
+      --secondary-color: #9d4edd;
+      --light-text: #6c757d;
+      --border-color: #dee2e6;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--white);
+      color: #212529;
+      line-height: 1.5;
+    }
+
+    .app-header {
+      background: var(--light-bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .logo-container img {
+      height: 26px;
+    }
+
+    .navigation {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-item {
+      text-decoration: none;
+      color: var(--light-text);
+      margin: 0 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-item:hover {
+      color: var(--main-color);
+    }
+
+    .login-btn {
+      width: 70px;
+      height: 34px;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .login-btn:hover {
+      background: var(--main-color);
+      color: var(--white);
+      border-color: var(--main-color);
+    }
+
+    .app-main {
+      padding: 30px 15px;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .main-heading {
+      text-align: center;
+      font-size: 34px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: var(--main-color);
+    }
+
+    .converter-container {
+      display: flex;
+      gap: 80px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .converter-panel {
+      width: 260px;
+    }
+
+    .panel-label {
+      text-align: left;
+      font-size: 14px;
+      color: var(--light-text);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .currency-selector {
+      display: flex;
+      margin-bottom: 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .currency-option {
+      flex: 1;
+      border: none;
+      padding: 10px 0;
+      cursor: pointer;
+      background-color: var(--white);
+      color: #adb5bd;
+      font-size: 14px;
+      font-weight: 700;
+      border-right: 1px solid var(--border-color);
+      transition: all 0.2s;
+    }
+
+    .currency-option:last-child {
+      border-right: none;
+    }
+
+    .currency-option.selected {
+      background-color: var(--main-color);
+      color: var(--white);
+    }
+
+    .amount-wrapper {
+      position: relative;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      padding: 12px;
+      background-color: var(--white);
+      text-align: left;
+      margin-top: 12px;
+    }
+
+    .amount-input {
+      border: none;
+      width: 100%;
+      font-size: 30px;
+      font-weight: 700;
+      background: transparent;
+      outline: none;
+      letter-spacing: 0.5px;
+      color: #343a40;
+    }
+
+    .exchange-rate {
+      font-size: 14px;
+      color: #adb5bd;
+      margin-top: 15px;
+      margin-left: 2px;
+    }
+
+    .amount-input::placeholder {
+      color: #ced4da;
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .amount-input:focus::placeholder {
+      color: transparent;
+    }
+
+    @media (max-width: 768px) {
+      .app-header {
+        padding: 10px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .navigation {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 6px;
+      }
+
+      .nav-item {
+        font-size: 12px;
+        margin: 0 4px;
+      }
+
+      .converter-container {
+        flex-direction: column;
+        gap: 25px;
+      }
+
+      .main-heading {
+        font-size: 26px;
+        margin-bottom: 25px;
+      }
+
+      .converter-panel {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
+      .currency-option {
+        font-size: 13px;
+        padding: 8px 0;
+      }
+
+      .amount-input {
+        font-size: 24px;
+      }
+
+      .exchange-rate {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="logo-container">
+      <img src="/Asset 1@3x 1.svg" alt="Bank Logo">
+    </div>
+    <nav class="navigation">
+      <a href="#" class="nav-item">BANK</a>
+      <a href="#" class="nav-item">BIZNES</a>
+      <a href="#" class="nav-item">İNVESTİSİYALAR</a>
+      <a href="#" class="nav-item">SİĞORTA</a>
+      <a href="#" class="nav-item">MOBİL TƏTBİQ</a>
+      <a href="#" class="nav-item">SƏYAHƏT</a>
+    </nav>
+    <button class="login-btn">GİRİŞ</button>
+  </header>
+  <main class="app-main">
+    <h1 class="main-heading">Valyuta Kalkulyatoru</h1>
+    <div class="converter-container">
+      <div class="converter-panel">
+        <div class="panel-label">MƏNDƏ OLAN</div>
+        <div class="currency-selector">
+          <button class="currency-option selected" data-currency="RUB">RUB</button>
+          <button class="currency-option" data-currency="USD">USD</button>
+          <button class="currency-option" data-currency="EUR">EUR</button>
+          <button class="currency-option" data-currency="GBP">GBP</button>
+        </div>
+        <div class="amount-wrapper">
+          <input type="text" class="amount-input from-amount" placeholder="0.00000" />
+          <div class="exchange-rate from-rate"></div>
+        </div>
+      </div>
+      <div class="converter-panel">
+        <div class="panel-label">ƏLDƏ ETMƏK İSTƏDİYİM</div>
+        <div class="currency-selector">
+          <button class="currency-option" data-currency="RUB">RUB</button>
+          <button class="currency-option selected" data-currency="USD">USD</button>
+          <button class="currency-option" data-currency="EUR">EUR</button>
+          <button class="currency-option" data-currency="GBP">GBP</button>
+        </div>
+        <div class="amount-wrapper">
+          <input type="text" class="amount-input to-amount" placeholder="0.00000"/>
+          <div class="exchange-rate to-rate"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const currencyConverter = {
+      baseCurrency: "RUB",
+      targetCurrency: "USD",
+      ratesData: {},
+      isCalculating: false,
+      lastChangedField: 'from',
+      
+      init() {
+        this.fromInput = document.querySelector('.from-amount');
+        this.toInput = document.querySelector('.to-amount');
+        this.fromButtons = document.querySelectorAll('.converter-panel:first-child .currency-option');
+        this.toButtons = document.querySelectorAll('.converter-panel:last-child .currency-option');
+        this.fromRateDisplay = document.querySelector('.from-rate');
+        this.toRateDisplay = document.querySelector('.to-rate');
+        
+        this.setupEventListeners();
+        this.loadExchangeRates(this.baseCurrency);
+      },
+      
+      setupEventListeners() {
+        this.fromButtons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.baseCurrency = btn.dataset.currency;
+            this.updateActiveButtons();
+            this.loadExchangeRates(this.baseCurrency);
+          });
+        });
+        
+        this.toButtons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.targetCurrency = btn.dataset.currency;
+            this.updateActiveButtons();
+            this.convertCurrency();
+          });
+        });
+        
+        this.fromInput.addEventListener('input', () => this.handleInputChange('from'));
+        this.toInput.addEventListener('input', () => this.handleInputChange('to'));
+      },
+      
+      formatNumber(value) {
+        return new Intl.NumberFormat('az-AZ', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 5
+        }).format(value);
+      },
+      
+      sanitizeInput(input) {
+        let cleaned = input.replace(',', '.').replace(/[^0-9.]/g, '');
+        const dotIndex = cleaned.indexOf('.');
+        
+        if (dotIndex !== -1) {
+          cleaned = cleaned.slice(0, dotIndex + 1) + cleaned.slice(dotIndex + 1).replace(/\./g, '');
+        }
+        
+        if (cleaned === '.') cleaned = '0.';
+        if (cleaned.includes('.')) {
+          const parts = cleaned.split('.');
+          cleaned = parts[0] + '.' + parts[1].slice(0, 5);
+        }
+        
+        if (cleaned.replace('.', '').length > 16) {
+          const parts = cleaned.split('.');
+          cleaned = parts[0].slice(0, 16) + (parts[1] ? '.' + parts[1].slice(0, 5) : '');
+        }
+        
+        return cleaned;
+      },
+      
+      async loadExchangeRates(currency) {
+        try {
+          const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${currency}`);
+          const data = await response.json();
+          
+          if (data.rates) {
+            this.ratesData = data.rates;
+            this.convertCurrency();
+          } else {
+            throw new Error("Məzənnə məlumatları alınmadı");
+          }
+        } catch (error) {
+          console.error("Xəta:", error);
+          document.querySelector('.app-main').innerHTML = `
+            <h1 style="color: #dc3545;">Xəta baş verdi</h1>
+            <p>Məzənnə məlumatları yüklənə bilmədi. Zəhmət olmasa internet bağlantınızı yoxlayın və səhifəni yeniləyin.</p>
+          `;
+        }
+      },
+      
+      updateActiveButtons() {
+        this.fromButtons.forEach(btn => 
+          btn.classList.toggle('selected', btn.dataset.currency === this.baseCurrency));
+        this.toButtons.forEach(btn => 
+          btn.classList.toggle('selected', btn.dataset.currency === this.targetCurrency));
+      },
+      
+      handleInputChange(field) {
+        if (this.isCalculating) return;
+        this.isCalculating = true;
+        this.lastChangedField = field;
+        
+        const inputElement = field === 'from' ? this.fromInput : this.toInput;
+        inputElement.value = this.sanitizeInput(inputElement.value);
+        
+        this.convertCurrency();
+        this.isCalculating = false;
+      },
+      
+      convertCurrency() {
+        if (!this.ratesData[this.targetCurrency]) return;
+        
+        const exchangeRate = this.ratesData[this.targetCurrency];
+        const reverseRate = 1 / exchangeRate;
+        
+        if (this.baseCurrency === this.targetCurrency) {
+          const amount = this.lastChangedField === 'from' 
+            ? parseFloat(this.fromInput.value.replace(/\s/g, '')) || 0
+            : parseFloat(this.toInput.value.replace(/\s/g, '')) || 0;
+            
+          this.fromInput.value = this.toInput.value = this.formatNumber(amount);
+          this.fromRateDisplay.textContent = `1 ${this.baseCurrency} = 1 ${this.targetCurrency}`;
+          this.toRateDisplay.textContent = `1 ${this.targetCurrency} = 1 ${this.baseCurrency}`;
+          return;
+        }
+        
+        if (this.lastChangedField === 'from') {
+          const amount = parseFloat(this.fromInput.value.replace(/\s/g, '')) || 0;
+          this.toInput.value = this.formatNumber(amount * exchangeRate);
+        } else {
+          const amount = parseFloat(this.toInput.value.replace(/\s/g, '')) || 0;
+          this.fromInput.value = this.formatNumber(amount * reverseRate);
+        }
+        
+        this.fromRateDisplay.textContent = `1 ${this.baseCurrency} = ${exchangeRate.toFixed(5)} ${this.targetCurrency}`;
+        this.toRateDisplay.textContent = `1 ${this.targetCurrency} = ${reverseRate.toFixed(5)} ${this.baseCurrency}`;
+      }
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      currencyConverter.init();
+    });
+  </script>
+</body>
+
+</html>
